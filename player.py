@@ -1,6 +1,6 @@
 import os
 import tkinter as tk
-from tkinter import Canvas, PhotoImage, Listbox, StringVar, messagebox,simpledialog, filedialog
+from tkinter import Canvas, PhotoImage, Listbox, StringVar, messagebox, simpledialog, filedialog
 from PIL import Image, ImageTk
 import time
 import random
@@ -14,13 +14,14 @@ import urllib.parse
 from tkinter import ttk
 import json
 import chardet
+from docutils.nodes import image
 
 
 def open_options_window():
     global root
     # 创建新的窗口
     options_window = tk.Toplevel(root)
-    options_window.iconbitmap('star.ico')
+    options_window.iconbitmap('E:/Music-Player/star.ico')
     options_window.title("选项")
     # 计算 options_window 的位置
     root.update_idletasks()  # 确保所有布局更新完成
@@ -59,7 +60,7 @@ def open_options_window():
                 def show_license():
                     # 创建一个新的窗口来显示条款信息
                     license_win = tk.Tk()
-                    license_win.iconbitmap('star.ico')
+                    license_win.iconbitmap('E:/Music-Player/star.ico')
                     license_win.geometry("800x600+500+200")
                     license_win.title("用户需知")
                     license_win.configure(bg="#F5F5F5")  # 设置背景色
@@ -74,7 +75,7 @@ def open_options_window():
                     text_frame.pack(expand=True, fill='both')
 
                     text = tk.Text(text_frame, wrap='word', state='disabled', bg="#FFFFFF", fg="#333333",
-                                        font=("Arial", 12))
+                                   font=("Arial", 12))
                     text.grid(row=0, column=0, sticky='nsew')
 
                     scrollbar = ttk.Scrollbar(text_frame, command=text.yview, style='Custom.Vertical.TScrollbar')
@@ -87,17 +88,17 @@ def open_options_window():
                         版权声明:
                         -----------------------------------
                         -----------------------------------
-                        
+
 
                         许可协议:
                         -----------------------------------
                         -----------------------------------
-                        
+
 
                         免责声明:
                         -----------------------------------
                         -----------------------------------
-                        
+
 
                         隐私条款:
                         -----------------------------------
@@ -126,7 +127,7 @@ def open_options_window():
                 class ShortcutApp:
                     def __init__(self, root):
                         self.root = root
-                        self.root.iconbitmap('star.ico')
+                        self.root.iconbitmap('E:/Music-Player/star.ico')
                         self.shortcuts = {
                             "新建项目": "Ctrl + N",
                             "打开项目": "Ctrl + O",
@@ -166,10 +167,10 @@ def open_options_window():
 
                     def load_shortcuts(self):
                         try:
-                            with open('shortcuts.json', 'rb') as f:
+                            with open('E:/Music-Player/shortcuts.json', 'rb') as f:
                                 result = chardet.detect(f.read())
                                 encoding = result['encoding']
-                            with open('shortcuts.json', 'r', encoding=encoding) as f:
+                            with open('E:/Music-Player/shortcuts.json', 'r', encoding=encoding) as f:
                                 self.shortcuts = json.load(f)
                         except FileNotFoundError:
                             self.save_shortcuts()  # 如果文件不存在，保存预定义的快捷键
@@ -178,7 +179,7 @@ def open_options_window():
                             self.shortcuts = {}  # 清空快捷键字典
 
                     def save_shortcuts(self):
-                        with open('shortcuts.json', 'w', encoding='utf-8') as f:
+                        with open('E:/Music-Player/shortcuts.json', 'w', encoding='utf-8') as f:
                             json.dump(self.shortcuts, f, ensure_ascii=False, indent=4)
 
                     def update_listbox(self):
@@ -245,7 +246,7 @@ def open_options_window():
 
                 def open_help_window():
                     help_window = tk.Tk()
-                    help_window.iconbitmap('star.ico')
+                    help_window.iconbitmap('E:/Music-Player/star.ico')
                     help_window.title("解疑答惑")
                     help_window.geometry("800x600")
                     help_window.configure(bg="#D3D3D3")  # 设置背景色为灰色
@@ -315,7 +316,8 @@ def open_options_window():
                     top_bar = tk.Frame(root, bg="#333333", height=10)
                     top_bar.pack(fill=tk.X)
 
-                    logo_label = tk.Label(top_bar, text="Masterwork Music", fg="white", bg="#333333", font=("Arial", 16))
+                    logo_label = tk.Label(top_bar, text="Masterwork Music", fg="white", bg="#333333",
+                                          font=("Arial", 16))
                     logo_label.pack(side=tk.LEFT, padx=10)
 
                     search_entry = tk.Entry(top_bar, width=10)
@@ -326,7 +328,7 @@ def open_options_window():
                     welcome_frame.pack(fill=tk.X, padx=10)
 
                     welcome_label = tk.Label(welcome_frame, text="你好，masterwork音樂用户！欢迎来到会员中心",
-                                                  font=("Arial", 14), bg="white")
+                                             font=("Arial", 14), bg="white")
                     welcome_label.pack()
 
                 def create_membership_details(content_frame):
@@ -416,7 +418,8 @@ def open_options_window():
                     support_frame = tkinter1.Frame(content_frame, bg="white", padx=10, pady=10)
                     support_frame.pack(fill=tkinter1.X, padx=10, pady=10)
 
-                    support_label = tkinter1.Label(support_frame, text="遇到问题？请联系我们", font=("Arial", 14, "bold"),
+                    support_label = tkinter1.Label(support_frame, text="遇到问题？请联系我们",
+                                                   font=("Arial", 14, "bold"),
                                                    bg="white")
                     support_label.pack(anchor=tkinter1.W, pady=10)
 
@@ -437,7 +440,7 @@ def open_options_window():
 
                 def main():
                     root = tk.Tk()
-                    root.iconbitmap('star.ico')
+                    root.iconbitmap('E:/Music-Player/star.ico')
                     root.title("masterwork音樂会员中心")
                     root.geometry("800x600")
                     root.config(bg="white")  # 设置背景颜色为白色
@@ -484,7 +487,7 @@ def open_options_window():
     listbox.bind('<<ListboxSelect>>', show_license_info)
 
 
-#搜索功能
+# 搜索功能
 def open_search():
     # 从免费代理服务获取代理列表
     def fetch_proxies():
@@ -594,7 +597,7 @@ def open_search():
 
     # 创建主窗口
     root = tk.Tk()
-    root.iconbitmap('star.ico')
+    root.iconbitmap('E:/Music-Player/star.ico')
     root.title("百度搜索")
 
     # 创建输入框和按钮
@@ -640,20 +643,20 @@ root.tk.call('tk', 'scaling', ScaleFactor / 80)
 # 窗口设置
 root.attributes('-alpha', 1)
 root.title('masterwork音樂播放機')
-root.iconbitmap('star.ico')
+root.iconbitmap('E:/Music-Player/star.ico')
 root.geometry('920x1200+550+100')
 root.resizable(False, False)
 
 # 设置背景图片
 canvas = tk.Canvas(root, width=920, height=1200, bd=0, highlightthickness=0)
-imgpath = '4.jpeg'
+imgpath = 'E:/Music-Player/4.jpeg'
 img = Image.open(imgpath)
 img = img.resize((920, 1200), Image.LANCZOS)  # 使用 LANCZOS 进行抗锯齿处理
 photo = ImageTk.PhotoImage(img)
 canvas.create_image(460, 600, image=photo)  # 调整背景图片的位置，使其居中
 canvas.pack()
 
-folder = 'E:/Python-MP3/MP3'
+folder = 'E:/Music-Player/music'
 res = []
 num = 0  # 初始化为0
 playing = False
@@ -683,7 +686,8 @@ def buttonaddClick():
     if folder:
         # 支持多种格式的音乐文件
         supported_formats = ('.mp3', '.wav', '.ogg', '.flac')
-        musics = [os.path.join(folder, music) for music in os.listdir(folder) if music.lower().endswith(supported_formats)]
+        musics = [os.path.join(folder, music) for music in os.listdir(folder) if
+                  music.lower().endswith(supported_formats)]
         if not musics:
             print("沒有找到支持的音乐文件")
             return
@@ -841,13 +845,11 @@ def search_music():
         original_indices = {i: res.index(filtered_res[i]) for i in range(len(filtered_res))}  # 更新映射
 
 
+# 返回功能
 def return_to_full_list():
-    global filtered_res, original_indices
     var2.set([os.path.basename(music)[:-4] for music in res])
     lb.selection_clear(0, tk.END)  # 清除当前选中的项目
     num = random.randint(0, len(res) - 1)  # 重新初始化num
-    filtered_res = []
-    original_indices = {}
 
 
 def END():
@@ -866,13 +868,12 @@ def END():
 def closeWindow():
     global root2
     root2 = tk.Toplevel(root)  # 使用 Toplevel 而不是 Tk
-    root2.iconbitmap('star.ico')
+    root2.iconbitmap('E:/Music-Player/star.ico')
     root2.title('masterwork音樂退出介面')
     root2.geometry('500x600+660+150')
 
-
     # 设置背景图片
-    imgpath2 = '3.jpeg'
+    imgpath2 = 'E:/Music-Player/3.jpeg'
     if not os.path.exists(imgpath2):
         print(f"图像文件 {imgpath2} 不存在")
         return
@@ -887,7 +888,7 @@ def closeWindow():
     canvas2.create_window(250, 300, window=label)  # 将标签放置在 Canvas 的中央
 
     buttonStop = tk.Button(root2, text='關閉音樂', fg="white", bg="brown", command=END,
-                                font=('Microsoft JhengHei', 16))
+                           font=('Microsoft JhengHei', 16))
     buttonStop.place(x=175, y=450, width=110, height=45)
 
     root2.mainloop()
@@ -903,72 +904,151 @@ search_var = tk.StringVar()
 search_entry = tk.Entry(root, textvariable=search_var, font=('Microsoft JhengHei', 16))
 search_entry.place(x=160, y=240, width=600, height=40)
 
+# 加载图片并调整大小
+try:
+    image8 = Image.open("E:/Music-Player/搜索.png")
+    # 调整图片大小，例如调整为 32x32 像素
+    image8 = image8.resize((32, 32), Image.LANCZOS)
+    photo8 = ImageTk.PhotoImage(image8)
+except FileNotFoundError:
+    print("文件未找到: E:/Music-Player/搜索.png")
+    photo8 = None
 # 搜索按钮
-buttonSearch = tk.Button(root, text='搜索', command=search_music, bg='Light Salmon', font=('Microsoft JhengHei', 16))
+buttonSearch = tk.Button(root, image=photo8, command=search_music, bg='Light Salmon', font=('Microsoft JhengHei', 16))
 buttonSearch.place(x=770, y=240, width=100, height=40)
+# 保持对图像的引用，防止垃圾回收
+buttonSearch.image = photo8
 
+# 加载图片并调整大小
+try:
+    image2 = Image.open("E:/Music-Player/列表.png")
+    # 调整图片大小，例如调整为 32x32 像素
+    image2 = image2.resize((32, 32), Image.LANCZOS)
+    photo2 = ImageTk.PhotoImage(image2)
+except FileNotFoundError:
+    print("文件未找到: E:/Music-Player/列表.png")
+    photo2 = None
+# 列表按钮
+buttonwin = tk.Button(root, image=photo2, command=open_options_window, bg='brown',
+                      font=('Microsoft JhengHei', 16))
+buttonwin.place(x=750, y=20, width=100, height=40)
+# 保持对图像的引用，防止垃圾回收
+buttonwin.image = photo2
 
-# 返回功能
-def return_to_full_list():
-    var2.set([os.path.basename(music)[:-4] for music in res])
-    lb.selection_clear(0, tk.END)  # 清除当前选中的项目
-    num = random.randint(0, len(res) - 1)  # 重新初始化num
-
-
-#列表按钮
-buttonNext = tk.Button(root, text='列表', command=open_options_window, bg='brown',
-                            font=('Microsoft JhengHei', 16))
-buttonNext.place(x=750, y=20, width=100, height=40)
-
+# 加载图片并调整大小
+try:
+    image3 = Image.open("E:/Music-Player/返回.png")
+    # 调整图片大小，例如调整为 32x32 像素
+    image3 = image3.resize((32, 32), Image.LANCZOS)
+    photo3 = ImageTk.PhotoImage(image3)
+except FileNotFoundError:
+    print("文件未找到: E:/Music-Player/返回.png")
+    photo3 = None
 # 返回按钮
-buttonReturn = tk.Button(root, text='返回', command=return_to_full_list, bg='Dark Slate Gray',
-                              font=('Microsoft JhengHei', 16))
+buttonReturn = tk.Button(root, image=photo3, command=return_to_full_list, bg='Dark Slate Gray',
+                         font=('Microsoft JhengHei', 16))
 buttonReturn.place(x=160, y=900, width=100, height=40)
+# 保持对图像的引用，防止垃圾回收
+buttonReturn.image = photo3
 
+# 加载图片并调整大小
+try:
+    image7 = Image.open("E:/Music-Player/资源.png")
+    # 调整图片大小，例如调整为 32x32 像素
+    image7 = image7.resize((32, 32), Image.LANCZOS)
+    photo7 = ImageTk.PhotoImage(image7)
+except FileNotFoundError:
+    print("文件未找到: E:/Music-Player/资源.png")
+    photo7 = None
 # 资源按钮
-buttonReturn = tk.Button(root, text='资源', command=open_search, bg='Dark Slate Gray', font=('Microsoft JhengHei', 16))
-buttonReturn.place(x=620, y=900, width=100, height=40)
-
+buttonopen = tk.Button(root, image=photo7, command=open_search, bg='Dark Slate Gray', font=('Microsoft JhengHei', 16))
+buttonopen.place(x=620, y=900, width=100, height=40)
+# 保持对图像的引用，防止垃圾回收
+buttonopen.image = photo7
 
 # 关闭窗口
 root.protocol('WM_DELETE_WINDOW', closeWindow)
 
+# 加载图片并调整大小
+try:
+    image6 = Image.打开("E:/Music-Player/歌单.png")
+    # 调整图片大小，例如调整为 32x32 像素
+    image6 = image6.resize((32, 32), Image.LANCZOS)
+    photo6 = ImageTk.PhotoImage(image6)
+except FileNotFoundError:
+    print("文件未找到: E:/Music-Player/歌单.png")
+    photo6 = None
 # 添加歌单按钮
-buttonadd = tk.Button(root, text='歌單', command=buttonaddClick, bg='Dark Slate Gray', font=('Microsoft JhengHei', 16))
+buttonadd = tk.Button(root, image=photo6, command=buttonaddClick, bg='Dark Slate Gray', font=('Microsoft JhengHei', 16))
 buttonadd.place(x=390, y=900, width=100, height=40)
+# 保持对图像的引用，防止垃圾回收
+buttonadd.image = photo6
 
 # 播放/暂停按钮
 pause_resume = tk.StringVar(root, value='播放')
 buttonPlay = tk.Button(root, textvariable=pause_resume, command=buttonPlayClick, bg='brown',
-                            font=('Microsoft JhengHei', 16))
+                       font=('Microsoft JhengHei', 16))
 buttonPlay.place(x=330, y=20, width=100, height=40)
 buttonPlay['state'] = 'disabled'
 
+# 加载图片并调整大小
+try:
+    image9 = Image.打开("E:/Music-Player/停止.png")
+    # 调整图片大小，例如调整为 32x32 像素
+    image9 = image9.resize((32, 32), Image.LANCZOS)
+    photo9 = ImageTk.PhotoImage(image9)
+except FileNotFoundError:
+    print("文件未找到: E:/Music-Player/停止.png")
+    photo9 = None
 # 停止按钮
-buttonStop = tk.Button(root, text='停止', command=buttonStopClick, bg='brown', font=('Microsoft JhengHei', 16))
+buttonStop = tk.Button(root, image=photo9, command=buttonStopClick, bg='brown', font=('Microsoft JhengHei', 16))
 buttonStop.place(x=450, y=20, width=100, height=40)
 buttonStop['state'] = 'disabled'
+# 保持对图像的引用，防止垃圾回收
+buttonadd.image = photo9
 
+# 加载图片并调整大小
+try:
+    image4 = Image.打开("E:/Music-Player/下一首.png")
+    # 调整图片大小，例如调整为 32x32 像素
+    image4 = image4.resize((32, 32), Image.LANCZOS)
+    photo4 = ImageTk.PhotoImage(image4)
+except FileNotFoundError:
+    print("文件未找到: E:/Music-Player/下一首.png")
+    photo4 = None
 # 下一首按钮
-buttonNext = tk.Button(root, text='下一首', command=buttonNextClick, bg='brown', font=('Microsoft JhengHei', 16))
+buttonNext = tk.Button(root, image=photo4, command=buttonNextClick, bg='brown', font=('Microsoft JhengHei', 16))
 buttonNext.place(x=620, y=20, width=100, height=40)
+# 保持对图像的引用，防止垃圾回收
+buttonNext.image = photo4
 buttonNext['state'] = 'disabled'
 
+# 加载图片并调整大小
+try:
+    image5 = Image.打开("E:/Music-Player/上一首.png")
+    # 调整图片大小，例如调整为 32x32 像素
+    image5 = image5.resize((32, 32), Image.LANCZOS)
+    photo5 = ImageTk.PhotoImage(image5)
+except FileNotFoundError:
+    print("文件未找到: E:/Music-Player/上一首.png")
+    photo5 = None
 # 上一首按钮
-buttonPre = tk.Button(root, text='上一首', command=buttonPreClick, bg='brown', font=('Microsoft JhengHei', 16))
+buttonPre = tk.Button(root, image=photo5, command=buttonPreClick, bg='brown', font=('Microsoft JhengHei', 16))
 buttonPre.place(x=170, y=20, width=100, height=40)
+# 保持对图像的引用，防止垃圾回收
+buttonPre.image = photo5
 buttonPre['state'] = 'disabled'
 
 # 当前播放的音乐名称
 musicName = tk.StringVar(root, value="暫時沒有播放音樂...")
 labelName = tk.标签(root, textvariable=musicName, fg="Cornsilk", bg='Light Salmon',
-                          font=('Microsoft JhengHei', 16))
+                     font=('Microsoft JhengHei', 16))
 labelName.place(x=160, y=66, width=600, height=40)
 
 # 音量控制滑块
 s = tk.Scale(root, label='', bg='FloralWhite', fg="DeepSkyBlue", from_=0, to_=100, orient=tk.HORIZONTAL,
-                  length=580, showvalue=0, tickinterval=25, resolution=0.1, command=contorlVoice,
-                  font=('Microsoft JhengHei', 16))
+             length=580, showvalue=0, tickinterval=25, resolution=0.1, command=contorlVoice,
+             font=('Microsoft JhengHei', 16))
 s.place(x=160, y=104, width=600)
 
 root.mainloop()
