@@ -1,14 +1,12 @@
 import os
-import tkinter
+import tkinter as tk
 from tkinter import Canvas, PhotoImage, Listbox, StringVar, messagebox,simpledialog, filedialog
 from PIL import Image, ImageTk
 import time
-import sys
 import random
 import threading
 import pygame
 import ctypes
-from math import sin, cos, pi, log
 import webbrowser
 import requests
 from bs4 import BeautifulSoup
@@ -20,21 +18,37 @@ import chardet
 
 def open_options_window():
     global root
-    root.iconbitmap('star.ico')
     # 创建新的窗口
-    options_window = tkinter.Toplevel(root)
-    options_window.title("音乐选项")
+    options_window = tk.Toplevel(root)
+    options_window.iconbitmap('star.ico')
+    options_window.title("选项")
+    # 计算 options_window 的位置
+    root.update_idletasks()  # 确保所有布局更新完成
+    root_width = root.winfo_width()
+    root_height = root.winfo_height()
+    root_x = root.winfo_x()
+    root_y = root.winfo_y()
 
+    # 设置 options_window 的宽度和高度
+    options_window_width = 200
+    options_window_height = 200
+
+    # 计算 options_window 的 x 和 y 坐标
+    options_window_x = root_x + root_width
+    options_window_y = root_y
+
+    # 设置 options_window 的位置
+    options_window.geometry(f"{options_window_width}x{options_window_height}+{options_window_x}+{options_window_y}")
     # 定义列表中的选项
-    options = ["声明", "快捷键", "会员", "宗旨","帮助"]
+    options = ["声明", "快捷键", "会员", "帮助"]
 
     # 创建列表框
-    listbox = tkinter.Listbox(options_window)
+    listbox = tk.Listbox(options_window)
     for option in options:
-        listbox.insert(tkinter.END, option)
+        listbox.insert(tk.END, option)
 
     # 将列表框放置在窗口中
-    listbox.pack(padx=20, pady=20, fill=tkinter.BOTH, expand=True)
+    listbox.pack(padx=20, pady=20, fill=tk.BOTH, expand=True)
 
     # 添加选择事件处理，例如显示所选项目
     def show_license_info(event):
@@ -44,19 +58,26 @@ def open_options_window():
             if selected_option == "声明":
                 def show_license():
                     # 创建一个新的窗口来显示条款信息
-                    license_win = tkinter.Tk()
+                    license_win = tk.Tk()
                     license_win.iconbitmap('star.ico')
                     license_win.geometry("800x600+500+200")
                     license_win.title("用户需知")
+                    license_win.configure(bg="#F5F5F5")  # 设置背景色
+
+                    # 添加标题
+                    title_label = ttk.Label(license_win, text="用户需知", font=("Arial", 16, "bold"),
+                                            background="#F5F5F5")
+                    title_label.pack(pady=10)
 
                     # 添加文本框来显示条款内容，并添加滚动条
-                    text_frame = tkinter.Frame(license_win)
+                    text_frame = ttk.Frame(license_win, padding=10)
                     text_frame.pack(expand=True, fill='both')
 
-                    text = tkinter.Text(text_frame, wrap='word', state='disabled')
+                    text = tk.Text(text_frame, wrap='word', state='disabled', bg="#FFFFFF", fg="#333333",
+                                        font=("Arial", 12))
                     text.grid(row=0, column=0, sticky='nsew')
 
-                    scrollbar = tkinter.Scrollbar(text_frame, command=text.yview)
+                    scrollbar = ttk.Scrollbar(text_frame, command=text.yview, style='Custom.Vertical.TScrollbar')
                     scrollbar.grid(row=0, column=1, sticky='ns')
 
                     text['yscrollcommand'] = scrollbar.set
@@ -64,16 +85,23 @@ def open_options_window():
                     # 插入条款内容
                     terms = """
                         版权声明:
-                        本软件由masterwork开发，受国际版权法保护。未经书面许可，任何单位和个人不得复制、发行或以其他方式使用本软件。
+                        -----------------------------------
+                        -----------------------------------
+                        
 
                         许可协议:
-                        使用本软件即表示您同意遵守本许可协议中的所有条款。如果您不同意，请勿使用本软件。
+                        -----------------------------------
+                        -----------------------------------
+                        
 
                         免责声明:
-                        本软件按“原样”提供，没有任何明示或暗示的保证，包括但不限于对适销性、特定用途适用性和非侵权的保证。
+                        -----------------------------------
+                        -----------------------------------
+                        
 
                         隐私条款:
-                        我们尊重并保护所有用户的个人隐私。我们不会收集、使用或泄露您的个人信息，除非获得您的明确同意或法律要求。
+                        -----------------------------------
+                        -----------------------------------
                         """
                     text.config(state='normal')
                     text.insert('1.0', terms)
@@ -82,6 +110,12 @@ def open_options_window():
                     # 调整文本框的布局
                     text_frame.grid_rowconfigure(0, weight=1)
                     text_frame.grid_columnconfigure(0, weight=1)
+
+                    # 自定义滚动条样式
+                    style = ttk.Style()
+                    style.theme_use('clam')
+                    style.configure('Custom.Vertical.TScrollbar', troughcolor='#E0E0E0', bordercolor='#F5F5F5',
+                                    background='#A0A0A0', darkcolor='#A0A0A0', lightcolor='#A0A0A0', arrowcolor='white')
 
                     # 运行主循环
                     license_win.mainloop()
@@ -112,22 +146,22 @@ def open_options_window():
                         self.load_shortcuts()
 
                         # 主窗口控件
-                        self.main_frame = tkinter.Frame(root)
+                        self.main_frame = tk.Frame(root)
                         self.main_frame.pack(padx=10, pady=10)
 
-                        self.shortcuts_listbox = tkinter.Listbox(self.main_frame, width=50, height=15)
-                        self.shortcuts_listbox.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=True)
+                        self.shortcuts_listbox = tk.Listbox(self.main_frame, width=50, height=15)
+                        self.shortcuts_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-                        self.scrollbar = tkinter.Scrollbar(self.main_frame, orient="vertical")
+                        self.scrollbar = tk.Scrollbar(self.main_frame, orient="vertical")
                         self.scrollbar.config(command=self.shortcuts_listbox.yview)
-                        self.scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
+                        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
                         self.shortcuts_listbox.config(yscrollcommand=self.scrollbar.set)
 
                         self.update_listbox()
 
                         # 编辑按钮
-                        self.edit_button = tkinter.Button(root, text="Edit Shortcut", command=self.modify_shortcut)
+                        self.edit_button = tk.Button(root, text="Edit Shortcut", command=self.modify_shortcut)
                         self.edit_button.pack(pady=5)
 
                     def load_shortcuts(self):
@@ -148,9 +182,9 @@ def open_options_window():
                             json.dump(self.shortcuts, f, ensure_ascii=False, indent=4)
 
                     def update_listbox(self):
-                        self.shortcuts_listbox.delete(0, tkinter.END)
+                        self.shortcuts_listbox.delete(0, tk.END)
                         for shortcut in self.shortcuts:
-                            self.shortcuts_listbox.insert(tkinter.END, f"{shortcut} - {self.shortcuts[shortcut]}")
+                            self.shortcuts_listbox.insert(tk.END, f"{shortcut} - {self.shortcuts[shortcut]}")
 
                     def modify_shortcut(self):
                         shortcut = simpledialog.askstring("输入", "请输入要修改的快捷键:", parent=self.root)
@@ -168,14 +202,76 @@ def open_options_window():
                             messagebox.showwarning("警告", "输入的快捷键不存在！")
 
                 if __name__ == "__main__":
-                    root = tkinter.Tk()
+                    root = tk.Tk()
                     root.title("Shortcut Manager")
 
                     app = ShortcutApp(root)
 
                     root.mainloop()
             elif selected_option == "帮助":
-                # 问题列表
+                def search_questions(search_entry, questions_tree):
+                    query = search_entry.get().strip()
+                    if not query:
+                        return
+
+                    for item in questions_tree.get_children():
+                        questions_tree.delete(item)
+
+                    filtered_questions = [q for q in questions if query.lower() in q[0].lower()]
+                    for question, answer in filtered_questions:
+                        questions_tree.insert("", "end", values=(question, answer))
+
+                def create_questions_treeview(parent):
+                    style = ttk.Style()
+                    style.theme_use('clam')  # 使用不同的主题
+                    style.configure("Treeview", background="#D3D3D3", foreground="black", rowheight=25,
+                                    fieldbackground="#D3D3D3")
+                    style.map('Treeview', background=[('selected', '#A9A9A9')])
+
+                    tree = ttk.Treeview(parent, columns=("Question", "Answer"), show="headings", height=20)
+                    tree.heading("Question", text="问题")
+                    tree.heading("Answer", text="回答")
+                    tree.column("Question", width=350)  # 调整列宽
+                    tree.column("Answer", width=350)
+                    tree.grid(row=1, column=0, columnspan=2, padx=10, pady=20, sticky='nsew')
+
+                    parent.grid_rowconfigure(1, weight=1)
+                    parent.grid_columnconfigure(0, weight=1)
+
+                    scrollbar = ttk.Scrollbar(parent, orient=tk.VERTICAL, command=tree.yview)
+                    tree.configure(yscrollcommand=scrollbar.set)
+                    scrollbar.grid(row=1, column=2, sticky='ns')
+                    return tree
+
+                def open_help_window():
+                    help_window = tk.Tk()
+                    help_window.iconbitmap('star.ico')
+                    help_window.title("解疑答惑")
+                    help_window.geometry("800x600")
+                    help_window.configure(bg="#D3D3D3")  # 设置背景色为灰色
+
+                    # 创建搜索框
+                    search_entry = ttk.Entry(help_window, width=40, font=('Arial', 12))
+                    search_entry.grid(row=0, column=0, padx=10, pady=20, sticky=tk.W)
+                    search_entry.insert(0, "搜索问题")
+                    search_entry.bind("<FocusIn>", lambda event: search_entry.delete(0,
+                                                                                     tk.END) if search_entry.get() == "搜索问题" else None)
+                    search_entry.bind("<Return>", lambda event: search_questions(search_entry, questions_tree))
+
+                    # 创建搜索按钮
+                    search_button = ttk.Button(help_window, text="搜索",
+                                               command=lambda: search_questions(search_entry, questions_tree),
+                                               style='TButton')
+                    search_button.grid(row=0, column=1, padx=10, pady=20, sticky=tk.W)
+
+                    # 创建问题列表
+                    global questions_tree
+                    questions_tree = create_questions_treeview(help_window)
+
+                    # 初始化显示所有问题和答案
+                    for question, answer in questions:
+                        questions_tree.insert("", "end", values=(question, answer))
+
                 questions = [
                     ("连续包月会员可以退费吗？", "连续包月会员可以在一定条件下申请退费。"),
                     ("iOS充值如何退款？", "iOS充值退款请通过App Store客服处理。"),
@@ -211,92 +307,34 @@ def open_options_window():
                     ("如何联系masterwork音樂客服？", "进入设置，找到帮助与反馈，点击在线客服。"),
                 ]
 
-                def search_questions(search_entry, questions_tree):
-                    query = search_entry.get().strip()
-                    if not query:
-                        return
-
-                    for item in questions_tree.get_children():
-                        questions_tree.delete(item)
-
-                    filtered_questions = [q for q in questions if query.lower() in q[0].lower()]
-                    for question, answer in filtered_questions:
-                        questions_tree.insert("", "end", values=(question, answer))
-
-                def create_questions_treeview(parent):
-                    tree = ttk.Treeview(parent, columns=("Question", "Answer"), show="headings")
-                    tree.heading("Question", text="问题")
-                    tree.heading("Answer", text="回答")
-                    tree.column("Question", width=500)  # 增加问题列的宽度
-                    tree.column("Answer", width=500)  # 增加回答列的宽度
-                    tree.grid(row=1, column=0, columnspan=2, padx=10, pady=80, sticky='nsew')
-
-                    # 增加 Treeview 的高度
-                    parent.grid_rowconfigure(1, weight=1)
-                    parent.grid_columnconfigure(0, weight=1)
-
-                    scrollbar = ttk.Scrollbar(parent, orient=tkinter.VERTICAL, command=tree.yview)
-                    tree.configure(yscrollcommand=scrollbar.set)
-                    scrollbar.grid(row=1, column=2, sticky='ns')
-                    return tree
-
-                def open_help_window():
-                    help_window = tkinter.Tk()
-                    help_window.title("解疑答惑")
-                    help_window.geometry("800x600")
-
-                    # 创建搜索框
-                    search_entry = ttk.Entry(help_window, width=40)
-                    search_entry.grid(row=0, column=0, padx=10, pady=50, sticky=tkinter.W)
-                    search_entry.insert(0, "搜索问题")
-                    search_entry.bind("<FocusIn>",
-                                      lambda event: search_entry.delete(0,
-                                                                        tkinter.END) if search_entry.get() == "搜索问题" else None)
-                    search_entry.bind("<Return>", lambda event: search_questions(search_entry, questions_tree))
-
-                    # 创建搜索按钮
-                    search_button = ttk.Button(help_window, text="搜索",
-                                               command=lambda: search_questions(search_entry, questions_tree))
-                    search_button.grid(row=0, column=1, padx=10, pady=50, sticky=tkinter.W)
-
-                    # 创建问题列表
-                    global questions_tree
-                    questions_tree = create_questions_treeview(help_window)
-
-                    # 初始化显示所有问题和答案
-                    for question, answer in questions:
-                        questions_tree.insert("", "end", values=(question, answer))
-
-                # 直接调用打开帮助窗口的函数
                 open_help_window()
-
-                # 进入Tkinter的主循环
-                tkinter.mainloop()
+                tk.mainloop()
 
             elif selected_option == "会员":
                 def create_top_bar(root):
-                    top_bar = tkinter.Frame(root, bg="#333333", height=10)
-                    top_bar.pack(fill=tkinter.X)
+                    top_bar = tk.Frame(root, bg="#333333", height=10)
+                    top_bar.pack(fill=tk.X)
 
-                    logo_label = tkinter.Label(top_bar, text="Masterwork Music", fg="white", bg="#333333", font=("Arial", 16))
-                    logo_label.pack(side=tkinter.LEFT, padx=10)
+                    logo_label = tk.Label(top_bar, text="Masterwork Music", fg="white", bg="#333333", font=("Arial", 16))
+                    logo_label.pack(side=tk.LEFT, padx=10)
 
-                    search_entry = tkinter.Entry(top_bar, width=10)
-                    search_entry.pack(side=tkinter.LEFT, padx=10)
+                    search_entry = tk.Entry(top_bar, width=10)
+                    search_entry.pack(side=tk.LEFT, padx=10)
 
                 def create_welcome_section(content_frame):
-                    welcome_frame = tkinter.Frame(content_frame, pady=10, bg="white")
-                    welcome_frame.pack(fill=tkinter.X, padx=10)
+                    welcome_frame = tk.Frame(content_frame, pady=10, bg="white")
+                    welcome_frame.pack(fill=tk.X, padx=10)
 
-                    welcome_label = tkinter.Label(welcome_frame, text="你好，masterwork音樂用户！欢迎来到会员中心",
+                    welcome_label = tk.Label(welcome_frame, text="你好，masterwork音樂用户！欢迎来到会员中心",
                                                   font=("Arial", 14), bg="white")
                     welcome_label.pack()
 
                 def create_membership_details(content_frame):
-                    details_frame = tkinter.Frame(content_frame, pady=10, bg="white")
-                    details_frame.pack(fill=tkinter.X, padx=10)
+                    tkinter1 = tk
+                    details_frame = tkinter1.Frame(content_frame, pady=10, bg="white")
+                    details_frame.pack(fill=tkinter1.X, padx=10)
 
-                    title_label = tkinter.Label(details_frame, text="会员计划", font=("Arial", 16, "bold"), bg="white")
+                    title_label = tkinter1.Label(details_frame, text="会员计划", font=("Arial", 16, "bold"), bg="white")
                     title_label.pack(pady=10)
 
                     # 会员分类
@@ -339,49 +377,50 @@ def open_options_window():
                     ]
 
                     # 创建一个单独的 Frame 用于 grid 布局
-                    grid_frame = tkinter.Frame(details_frame, bg="white")
-                    grid_frame.pack(fill=tkinter.X, padx=10, pady=10)
+                    grid_frame = tkinter1.Frame(details_frame, bg="white")
+                    grid_frame.pack(fill=tkinter1.X, padx=10, pady=10)
 
                     for i, membership in enumerate(membership_types):
-                        type_frame = tkinter.Frame(grid_frame, borderwidth=1, relief=tkinter.SOLID, padx=10, pady=10,
-                                                   bg="white")
+                        type_frame = tkinter1.Frame(grid_frame, borderwidth=1, relief=tkinter1.SOLID, padx=10, pady=10,
+                                                    bg="white")
                         type_frame.grid(row=0, column=i, padx=10, pady=10)
 
-                        name_label = tkinter.Label(type_frame, text=membership["name"], font=("Arial", 14, "bold"),
-                                                   bg="white")
-                        name_label.pack(anchor=tkinter.W)
-
-                        price_label = tkinter.Label(type_frame, text=membership["price"], font=("Arial", 12),
+                        name_label = tkinter1.Label(type_frame, text=membership["name"], font=("Arial", 14, "bold"),
                                                     bg="white")
-                        price_label.pack(anchor=tkinter.W)
+                        name_label.pack(anchor=tkinter1.W)
 
-                        description_label = tkinter.Label(type_frame, text=membership["description"],
-                                                          font=("Arial", 12), bg="white")
-                        description_label.pack(anchor=tkinter.W)
+                        price_label = tkinter1.Label(type_frame, text=membership["price"], font=("Arial", 12),
+                                                     bg="white")
+                        price_label.pack(anchor=tkinter1.W)
 
-                        privileges_label = tkinter.Label(type_frame, text="会员特权", font=("Arial", 12, "bold"),
-                                                         bg="white")
-                        privileges_label.pack(anchor=tkinter.W, pady=5)
+                        description_label = tkinter1.Label(type_frame, text=membership["description"],
+                                                           font=("Arial", 12), bg="white")
+                        description_label.pack(anchor=tkinter1.W)
+
+                        privileges_label = tkinter1.Label(type_frame, text="会员特权", font=("Arial", 12, "bold"),
+                                                          bg="white")
+                        privileges_label.pack(anchor=tkinter1.W, pady=5)
 
                         for privilege in membership["privileges"]:
-                            label = tkinter.Label(type_frame, text=f"{privilege['icon']} {privilege['text']}",
-                                                  font=("Arial", 12),
-                                                  bg="white")
-                            label.pack(anchor=tkinter.W)
+                            label = tkinter1.Label(type_frame, text=f"{privilege['icon']} {privilege['text']}",
+                                                   font=("Arial", 12),
+                                                   bg="white")
+                            label.pack(anchor=tkinter1.W)
 
-                        subscribe_button = tkinter.Button(type_frame, text="立即订阅",
-                                                          command=lambda m=membership: subscribe_membership(m))
+                        subscribe_button = tkinter1.Button(type_frame, text="立即订阅",
+                                                           command=lambda m=membership: subscribe_membership(m))
                         subscribe_button.pack(pady=5)
 
                 def create_support_section(content_frame):
-                    support_frame = tkinter.Frame(content_frame, bg="white", padx=10, pady=10)
-                    support_frame.pack(fill=tkinter.X, padx=10, pady=10)
+                    tkinter1 = tk
+                    support_frame = tkinter1.Frame(content_frame, bg="white", padx=10, pady=10)
+                    support_frame.pack(fill=tkinter1.X, padx=10, pady=10)
 
-                    support_label = tkinter.Label(support_frame, text="遇到问题？请联系我们", font=("Arial", 14, "bold"),
-                                                  bg="white")
-                    support_label.pack(anchor=tkinter.W, pady=10)
+                    support_label = tkinter1.Label(support_frame, text="遇到问题？请联系我们", font=("Arial", 14, "bold"),
+                                                   bg="white")
+                    support_label.pack(anchor=tkinter1.W, pady=10)
 
-                    contact_button = tkinter.Button(support_frame, text="联系客服", command=open_contact)
+                    contact_button = tkinter1.Button(support_frame, text="联系客服", command=open_contact)
                     contact_button.pack(pady=5)
 
                 def renew_membership():
@@ -397,7 +436,7 @@ def open_options_window():
                     canvas.yview_scroll(-1 * int(event.delta / 120), "units")
 
                 def main():
-                    root = tkinter.Tk()
+                    root = tk.Tk()
                     root.iconbitmap('star.ico')
                     root.title("masterwork音樂会员中心")
                     root.geometry("800x600")
@@ -407,19 +446,19 @@ def open_options_window():
                     create_top_bar(root)
 
                     # 创建主内容区域
-                    main_frame = tkinter.Frame(root, bg="white")
-                    main_frame.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=True)
+                    main_frame = tk.Frame(root, bg="white")
+                    main_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-                    canvas = tkinter.Canvas(main_frame, bg="white")
-                    canvas.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=True)
+                    canvas = tk.Canvas(main_frame, bg="white")
+                    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-                    scrollbar = tkinter.Scrollbar(main_frame, command=canvas.yview)
-                    scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
+                    scrollbar = tk.Scrollbar(main_frame, command=canvas.yview)
+                    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
                     canvas.configure(yscrollcommand=scrollbar.set)
                     canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
 
-                    content_frame = tkinter.Frame(canvas, bg="white")
+                    content_frame = tk.Frame(canvas, bg="white")
                     canvas.create_window((0, 0), window=content_frame, anchor="nw")
 
                     # 创建内容部分
@@ -436,128 +475,7 @@ def open_options_window():
 
                 if __name__ == "__main__":
                     main()
-            elif selected_option == "宗旨":
-                def run_heart_animation():
-                    CANVAS_WIDTH, CANVAS_HEIGHT = 640, 480
-                    CANVAS_CENTER_X, CANVAS_CENTER_Y = CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2
-                    IMAGE_ENLARGE = 11
 
-                    def heart_function(t, shrink_ratio=IMAGE_ENLARGE):
-                        x = 16 * (sin(t) ** 3)
-                        y = -(13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t))
-                        x *= shrink_ratio
-                        y *= shrink_ratio
-                        x += CANVAS_CENTER_X
-                        y += CANVAS_CENTER_Y
-                        return int(x), int(y)
-
-                    def scatter_inside(x, y, beta=0.15):
-                        ratio_x = - beta * log(random.random())
-                        ratio_y = - beta * log(random.random())
-                        dx = ratio_x * (x - CANVAS_CENTER_X)
-                        dy = ratio_y * (y - CANVAS_CENTER_Y)
-                        return x - dx, y - dy
-
-                    def shrink(x, y, ratio):
-                        force = -1 / (((x - CANVAS_CENTER_X) ** 2 + (y - CANVAS_CENTER_Y) ** 2) ** 0.6)
-                        dx = ratio * force * (x - CANVAS_CENTER_X)
-                        dy = ratio * force * (y - CANVAS_CENTER_Y)
-                        return x - dx, y - dy
-
-                    def curve(p):
-                        return 2 * (2 * sin(4 * p)) / (2 * pi)
-
-                    class Heart:
-                        def __init__(self, generate_frame=20):
-                            self._points = set()
-                            self._edge_diffusion_points = set()
-                            self._center_diffusion_points = set()
-                            self.all_points = {}
-                            self.build(2000)
-                            self.random_halo = 1000
-                            self.generate_frame = generate_frame
-                            for frame in range(generate_frame):
-                                self.calc(frame)
-
-                        def build(self, number):
-                            for _ in range(number):
-                                t = random.uniform(0, 2 * pi)
-                                x, y = heart_function(t)
-                                self._points.add((x, y))
-                            for _x, _y in list(self._points):
-                                for _ in range(3):
-                                    x, y = scatter_inside(_x, _y, 0.05)
-                                    self._edge_diffusion_points.add((x, y))
-                            point_list = list(self._points)
-                            for _ in range(4000):
-                                x, y = random.choice(point_list)
-                                x, y = scatter_inside(x, y, 0.17)
-                                self._center_diffusion_points.add((x, y))
-
-                        @staticmethod
-                        def calc_position(x, y, ratio):
-                            force = 1 / (((x - CANVAS_CENTER_X) ** 2 + (y - CANVAS_CENTER_Y) ** 2) ** 0.520)
-                            dx = ratio * force * (x - CANVAS_CENTER_X) + random.randint(-1, 1)
-                            dy = ratio * force * (y - CANVAS_CENTER_Y) + random.randint(-1, 1)
-                            return x - dx, y - dy
-
-                        def calc(self, generate_frame):
-                            ratio = 10 * curve(generate_frame / 10 * pi)
-                            halo_radius = int(4 + 6 * (1 + curve(generate_frame / 10 * pi)))
-                            halo_number = int(3000 + 4000 * abs(curve(generate_frame / 10 * pi) ** 2))
-                            all_points = []
-                            heart_halo_point = set()
-                            for _ in range(halo_number):
-                                t = random.uniform(0, 2 * pi)
-                                x, y = heart_function(t, shrink_ratio=11.6)
-                                x, y = shrink(x, y, halo_radius)
-                                if (x, y) not in heart_halo_point:
-                                    heart_halo_point.add((x, y))
-                                    x += random.randint(-14, 14)
-                                    y += random.randint(-14, 14)
-                                    size = random.choice((1, 2, 2))
-                                    all_points.append((x, y, size))
-                            for x, y in self._points:
-                                x, y = self.calc_position(x, y, ratio)
-                                size = random.randint(1, 3)
-                                all_points.append((x, y, size))
-                            for x, y in self._edge_diffusion_points:
-                                x, y = self.calc_position(x, y, ratio)
-                                size = random.randint(1, 2)
-                                all_points.append((x, y, size))
-                            for x, y in self._center_diffusion_points:
-                                x, y = self.calc_position(x, y, ratio)
-                                size = random.randint(1, 2)
-                                all_points.append((x, y, size))
-                            self.all_points[generate_frame] = all_points
-
-                        def render(self, render_canvas, render_frame):
-                            colors = ["#9400D3", "#FFFF00", "#FFC0CB", "#FF0000", "#FFA500", "#A52A2A"]
-                            color_cycle_length = len(colors)
-                            for x, y, size in self.all_points[render_frame % self.generate_frame]:
-                                color_index = int((x / (CANVAS_WIDTH // color_cycle_length)) % color_cycle_length)
-                                color = colors[color_index]
-                                render_canvas.create_rectangle(x, y, x + size, y + size, width=0, fill=color)
-
-                    def draw_heart(frame=0):
-                        canvas.delete('all')
-                        heart.render(canvas, frame)
-                        frame += 1
-                        if frame < heart.generate_frame:
-                            root.after(160, draw_heart, frame)
-                        else:
-                            root.after(160, draw_heart, 0)
-
-                    root = tkinter.Tk()
-                    root.iconbitmap('star.ico')
-                    root.title("唤醒一颗五彩斑斓的心跳")
-                    canvas = tkinter.Canvas(root, bg='black', height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
-                    canvas.pack()
-                    heart = Heart()
-                    draw_heart()  # 直接调用draw_heart开始动画
-                    root.mainloop()
-
-                run_heart_animation()
         except IndexError:
             # 如果没有选中任何项目，则忽略
             pass
@@ -568,8 +486,33 @@ def open_options_window():
 
 #搜索功能
 def open_search():
-    # 初始化搜索结果的链接列表
-    links = []
+    # 从免费代理服务获取代理列表
+    def fetch_proxies():
+        try:
+            response = requests.get('https://free-proxy-list.net/')
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
+            proxies = []
+            for row in soup.find('table', id='proxylisttable').find_all('tr')[1:]:
+                cols = row.find_all('td')
+                if cols:
+                    ip = cols[0].text.strip()
+                    port = cols[1].text.strip()
+                    protocol = 'http' if cols[6].text.strip() == 'no' else 'https'
+                    proxies.append(f'{protocol}://{ip}:{port}')
+            return proxies
+        except requests.exceptions.RequestException as e:
+            print(f"获取代理列表失败: {e}")
+            return []
+
+    # 验证代理有效性
+    def validate_proxy(proxy):
+        try:
+            response = requests.get('https://www.baidu.com/', proxies={'http': proxy, 'https': proxy}, timeout=5)
+            return response.status_code == 200
+        except requests.exceptions.RequestException:
+            return False
+
     def search_baidu():
         key_word = entry.get()
         base_url = 'https://www.baidu.com/s'
@@ -578,46 +521,65 @@ def open_search():
         url = base_url + '?' + urllib.parse.urlencode(params)
 
         headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                          "(KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
 
-        try:
-            response = requests.get(url, headers=headers)
-            response.raise_for_status()
+        max_retries = 3
+        proxies = fetch_proxies()
+        if not proxies:
+            print("无法获取有效代理，尝试直接请求...")
+            proxies = [None]  # 如果没有有效代理，直接请求
 
-            # 打印响应状态码和URL，确保请求成功
-            print(f"请求成功，状态码: {response.status_code}, URL: {response.url}")
+        for attempt in range(max_retries):
+            proxy = random.choice(proxies) if proxies else None
 
-            # 使用BeautifulSoup解析HTML内容
-            soup = BeautifulSoup(response.text, 'html.parser')
+            if proxy and not validate_proxy(proxy):
+                print(f"代理 {proxy} 无效，尝试下一个代理...")
+                continue
 
-            # 查找搜索结果的所有链接
-            global links
-            links = []
-            for result in soup.find_all('div', class_='c-container'):
-                link_elem = result.find('a')
-                if link_elem:
-                    href = link_elem.get('href')
-                    # 百度搜索结果中的链接可能需要处理成正确地跳转链接
-                    if href and (href.startswith('http') or href.startswith('https')):
-                        links.append(href)
+            try:
+                response = requests.get(url, headers=headers,
+                                        proxies={'http': proxy, 'https': proxy} if proxy else None)
+                response.raise_for_status()
 
-            # 在主线程中更新文本框内容
-            update_text_result()
+                # 模拟人类行为，增加请求间隔
+                time.sleep(random.uniform(1, 3))
 
-        except requests.exceptions.RequestException as e:
-            print(f"请求错误: {e}")
-        except Exception as e:
-            print(f"未知错误: {e}")
+                # 打印响应状态码和URL，确保请求成功
+                print(f"请求成功，状态码: {response.status_code}, URL: {response.url}")
+
+                # 使用BeautifulSoup解析HTML内容
+                soup = BeautifulSoup(response.text, 'html.parser')
+
+                # 查找搜索结果的所有链接
+                global links
+                links = []
+                for result in soup.find_all('div', class_='c-container'):
+                    link_elem = result.find('a')
+                    if link_elem:
+                        href = link_elem.get('href')
+                        if href and (href.startswith('http') or href.startswith('https')):
+                            links.append(href)
+
+                # 在主线程中更新文本框内容
+                update_text_result()
+                break  # 请求成功，退出重试循环
+
+            except requests.exceptions.RequestException as e:
+                print(f"请求错误: {e}")
+                if attempt < max_retries - 1:
+                    print(f"尝试重新请求，剩余尝试次数: {max_retries - attempt - 1}")
+            except Exception as e:
+                print(f"未知错误: {e}")
+                break
 
     def update_text_result():
         # 清空显示区域并显示搜索结果链接
-        text_result.config(state=tkinter.NORMAL)  # 设置为可写入状态
-        text_result.delete('1.0', tkinter.END)
+        text_result.config(state=tk.NORMAL)  # 设置为可写入状态
+        text_result.delete('1.0', tk.END)
         for idx, link in enumerate(links, start=1):
-            text_result.insert(tkinter.END, f"{idx}. {link}\n")
-        text_result.config(state=tkinter.DISABLED)  # 设置为不可写入状态
+            text_result.insert(tk.END, f"{idx}. {link}\n")
+        text_result.config(state=tk.DISABLED)  # 设置为不可写入状态
 
     def open_selected_link():
         # 获取用户输入的数字
@@ -631,33 +593,33 @@ def open_search():
             print("请输入有效的数字")
 
     # 创建主窗口
-    root = tkinter.Tk()
+    root = tk.Tk()
     root.iconbitmap('star.ico')
     root.title("百度搜索")
 
     # 创建输入框和按钮
-    label = tkinter.Label(root, text="请输入搜索关键词：")
+    label = tk.Label(root, text="请输入搜索关键词：")
     label.pack(pady=10)
 
-    entry = tkinter.Entry(root, width=50)
+    entry = tk.Entry(root, width=50)
     entry.pack(pady=5)
 
-    button_search = tkinter.Button(root, text="搜索", command=search_baidu)
+    button_search = tk.Button(root, text="搜索", command=search_baidu)
     button_search.pack(pady=10)
 
     # 创建显示结果的文本框，设置为只读状态
-    text_result = tkinter.Text(root, height=15, width=80)
+    text_result = tk.Text(root, height=15, width=80)
     text_result.pack(padx=10, pady=10)
-    text_result.config(state=tkinter.DISABLED)
+    text_result.config(state=tk.DISABLED)
 
     # 创建选择链接的输入框和按钮
-    label_select = tkinter.Label(root, text="请输入链接编号：")
+    label_select = tk.Label(root, text="请输入链接编号：")
     label_select.pack(pady=10)
 
-    entry_select = tkinter.Entry(root, width=10)
+    entry_select = tk.Entry(root, width=10)
     entry_select.pack(pady=5)
 
-    button_open = tkinter.Button(root, text="打开链接", command=open_selected_link)
+    button_open = tk.Button(root, text="打开链接", command=open_selected_link)
     button_open.pack(pady=5)
 
     # 运行主程序
@@ -670,7 +632,7 @@ pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
 print("Pygame and Mixer initialized in main thread")
 
 # 高像素
-root = tkinter.Tk()
+root = tk.Tk()
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 ScaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0)
 root.tk.call('tk', 'scaling', ScaleFactor / 80)
@@ -683,15 +645,15 @@ root.geometry('920x1200+550+100')
 root.resizable(False, False)
 
 # 设置背景图片
-canvas = tkinter.Canvas(root, width=920, height=1200, bd=0, highlightthickness=0)
-imgpath = '1.jpg'
+canvas = tk.Canvas(root, width=920, height=1200, bd=0, highlightthickness=0)
+imgpath = '4.jpeg'
 img = Image.open(imgpath)
 img = img.resize((920, 1200), Image.LANCZOS)  # 使用 LANCZOS 进行抗锯齿处理
 photo = ImageTk.PhotoImage(img)
 canvas.create_image(460, 600, image=photo)  # 调整背景图片的位置，使其居中
 canvas.pack()
 
-folder = 'E:/Python-MP3/mp3'
+folder = 'E:/Python-MP3/MP3'
 res = []
 num = 0  # 初始化为0
 playing = False
@@ -719,16 +681,18 @@ def ensure_pygame_initialized():
 def buttonaddClick():
     global folder, res, num, lb
     if folder:
-        musics = [os.path.join(folder, music) for music in os.listdir(folder) if music.endswith('.mp3')]
+        # 支持多种格式的音乐文件
+        supported_formats = ('.mp3', '.wav', '.ogg', '.flac')
+        musics = [os.path.join(folder, music) for music in os.listdir(folder) if music.lower().endswith(supported_formats)]
         if not musics:
-            print("沒有找到MP3文件")
+            print("沒有找到支持的音乐文件")
             return
         res = musics
         ret = [os.path.basename(music)[:-4] for music in musics]
         var2.set(ret)
         if lb:
             lb.destroy()  # 如果列表框已经存在，先销毁它
-        lb = tkinter.Listbox(root, listvariable=var2, background='SkyBlue', font=('Microsoft JhengHei', 16))
+        lb = tk.Listbox(root, listvariable=var2, background='Linen', font=('Microsoft JhengHei', 16))
         lb.place(x=160, y=280, width=600, height=600)
         lb.bind('<<ListboxSelect>>', on_select)  # 绑定选择事件
         buttonPlay['state'] = 'normal'
@@ -871,7 +835,7 @@ def search_music():
         return
     ret = [os.path.basename(music)[:-4] for music in filtered_res]
     var2.set(ret)
-    lb.selection_clear(0, tkinter.END)  # 清除当前选中的项目
+    lb.selection_clear(0, tk.END)  # 清除当前选中的项目
     if filtered_res:
         lb.selection_set(0)  # 选中第一个搜索结果
         original_indices = {i: res.index(filtered_res[i]) for i in range(len(filtered_res))}  # 更新映射
@@ -880,7 +844,7 @@ def search_music():
 def return_to_full_list():
     global filtered_res, original_indices
     var2.set([os.path.basename(music)[:-4] for music in res])
-    lb.selection_clear(0, tkinter.END)  # 清除当前选中的项目
+    lb.selection_clear(0, tk.END)  # 清除当前选中的项目
     num = random.randint(0, len(res) - 1)  # 重新初始化num
     filtered_res = []
     original_indices = {}
@@ -901,38 +865,30 @@ def END():
 
 def closeWindow():
     global root2
-    root2 = tkinter.Toplevel(root)  # 使用 Toplevel 而不是 Tk
+    root2 = tk.Toplevel(root)  # 使用 Toplevel 而不是 Tk
     root2.iconbitmap('star.ico')
     root2.title('masterwork音樂退出介面')
     root2.geometry('500x600+660+150')
 
+
     # 设置背景图片
-    imgpath2 = '2.jpg'
+    imgpath2 = '3.jpeg'
     if not os.path.exists(imgpath2):
         print(f"图像文件 {imgpath2} 不存在")
         return
-
+    canvas2 = tk.Canvas(root2, width=500, height=600, bd=0, highlightthickness=0)
     img2 = Image.open(imgpath2)
-    # 计算保持宽高比的尺寸
-    img_width, img_height = img2.size
-    aspect_ratio = img_width / img_height
-    new_width = 500
-    new_height = int(new_width / aspect_ratio)
-    if new_height > 600:
-        new_height = 600
-        new_width = int(new_height * aspect_ratio)
-    img2 = img2.resize((new_width, new_height), Image.LANCZOS)  # 使用 LANCZOS 进行抗锯齿处理
+    img2 = img2.resize((500, 600), Image.LANCZOS)  # 使用 LANCZOS 进行抗锯齿处理
     photo2 = ImageTk.PhotoImage(img2)
-    root2.photo2 = photo2  # 保持对图像的引用
-
-    # 创建带有图片的画布
-    canvas2 = tkinter.Canvas(root2, width=500, height=600, bd=0, highlightthickness=0)
-    canvas2.create_image(250, 300, image=root2.photo2)  # 调整背景图片的位置，使其居中
+    canvas2.create_image(250, 300, image=photo2)  # 调整背景图片的位置，使其居中
     canvas2.pack()
+    # 创建标签并放置在 Canvas 上
+    label = tk.Label(root2, text="你确定要退出吗?", font=('宋体', 30), bg='Dark Slate Gray', fg='white')
+    canvas2.create_window(250, 300, window=label)  # 将标签放置在 Canvas 的中央
 
-    buttonStop = tkinter.Button(root2, text='關閉音樂', fg="white", bg="orange", command=END,
+    buttonStop = tk.Button(root2, text='關閉音樂', fg="white", bg="brown", command=END,
                                 font=('Microsoft JhengHei', 16))
-    buttonStop.place(x=175, y=450, width=150, height=70)
+    buttonStop.place(x=175, y=450, width=110, height=45)
 
     root2.mainloop()
 
@@ -943,34 +899,34 @@ def contorlVoice(value):
 
 
 # 搜索功能
-search_var = tkinter.StringVar()
-search_entry = tkinter.Entry(root, textvariable=search_var, font=('Microsoft JhengHei', 16))
+search_var = tk.StringVar()
+search_entry = tk.Entry(root, textvariable=search_var, font=('Microsoft JhengHei', 16))
 search_entry.place(x=160, y=240, width=600, height=40)
 
 # 搜索按钮
-buttonSearch = tkinter.Button(root, text='搜索', command=search_music, bg='SkyBlue', font=('Microsoft JhengHei', 16))
+buttonSearch = tk.Button(root, text='搜索', command=search_music, bg='Light Salmon', font=('Microsoft JhengHei', 16))
 buttonSearch.place(x=770, y=240, width=100, height=40)
 
 
 # 返回功能
 def return_to_full_list():
     var2.set([os.path.basename(music)[:-4] for music in res])
-    lb.selection_clear(0, tkinter.END)  # 清除当前选中的项目
+    lb.selection_clear(0, tk.END)  # 清除当前选中的项目
     num = random.randint(0, len(res) - 1)  # 重新初始化num
 
 
 #列表按钮
-buttonNext = tkinter.Button(root, text='列表', command=open_options_window, bg='SkyBlue',
+buttonNext = tk.Button(root, text='列表', command=open_options_window, bg='brown',
                             font=('Microsoft JhengHei', 16))
 buttonNext.place(x=750, y=20, width=100, height=40)
 
 # 返回按钮
-buttonReturn = tkinter.Button(root, text='返回', command=return_to_full_list, bg='SkyBlue',
+buttonReturn = tk.Button(root, text='返回', command=return_to_full_list, bg='Dark Slate Gray',
                               font=('Microsoft JhengHei', 16))
 buttonReturn.place(x=160, y=900, width=100, height=40)
 
 # 资源按钮
-buttonReturn = tkinter.Button(root, text='资源', command=open_search, bg='SkyBlue', font=('Microsoft JhengHei', 16))
+buttonReturn = tk.Button(root, text='资源', command=open_search, bg='Dark Slate Gray', font=('Microsoft JhengHei', 16))
 buttonReturn.place(x=620, y=900, width=100, height=40)
 
 
@@ -978,39 +934,39 @@ buttonReturn.place(x=620, y=900, width=100, height=40)
 root.protocol('WM_DELETE_WINDOW', closeWindow)
 
 # 添加歌单按钮
-buttonadd = tkinter.Button(root, text='歌單', command=buttonaddClick, bg='SkyBlue', font=('Microsoft JhengHei', 16))
-buttonadd.place(x=160, y=20, width=100, height=40)
+buttonadd = tk.Button(root, text='歌單', command=buttonaddClick, bg='Dark Slate Gray', font=('Microsoft JhengHei', 16))
+buttonadd.place(x=390, y=900, width=100, height=40)
 
 # 播放/暂停按钮
-pause_resume = tkinter.StringVar(root, value='播放')
-buttonPlay = tkinter.Button(root, textvariable=pause_resume, command=buttonPlayClick, bg='SkyBlue',
+pause_resume = tk.StringVar(root, value='播放')
+buttonPlay = tk.Button(root, textvariable=pause_resume, command=buttonPlayClick, bg='brown',
                             font=('Microsoft JhengHei', 16))
-buttonPlay.place(x=280, y=20, width=100, height=40)
+buttonPlay.place(x=330, y=20, width=100, height=40)
 buttonPlay['state'] = 'disabled'
 
 # 停止按钮
-buttonStop = tkinter.Button(root, text='停止', command=buttonStopClick, bg='SkyBlue', font=('Microsoft JhengHei', 16))
-buttonStop.place(x=380, y=20, width=100, height=40)
+buttonStop = tk.Button(root, text='停止', command=buttonStopClick, bg='brown', font=('Microsoft JhengHei', 16))
+buttonStop.place(x=450, y=20, width=100, height=40)
 buttonStop['state'] = 'disabled'
 
 # 下一首按钮
-buttonNext = tkinter.Button(root, text='下一首', command=buttonNextClick, bg='SkyBlue', font=('Microsoft JhengHei', 16))
-buttonNext.place(x=520, y=20, width=100, height=40)
+buttonNext = tk.Button(root, text='下一首', command=buttonNextClick, bg='brown', font=('Microsoft JhengHei', 16))
+buttonNext.place(x=620, y=20, width=100, height=40)
 buttonNext['state'] = 'disabled'
 
 # 上一首按钮
-buttonPre = tkinter.Button(root, text='上一首', command=buttonPreClick, bg='SkyBlue', font=('Microsoft JhengHei', 16))
-buttonPre.place(x=620, y=20, width=100, height=40)
+buttonPre = tk.Button(root, text='上一首', command=buttonPreClick, bg='brown', font=('Microsoft JhengHei', 16))
+buttonPre.place(x=170, y=20, width=100, height=40)
 buttonPre['state'] = 'disabled'
 
 # 当前播放的音乐名称
-musicName = tkinter.StringVar(root, value="暫時沒有播放音樂...")
-labelName = tkinter.Label(root, textvariable=musicName, fg="SeaGreen", bg='FloralWhite',
+musicName = tk.StringVar(root, value="暫時沒有播放音樂...")
+labelName = tk.标签(root, textvariable=musicName, fg="Cornsilk", bg='Light Salmon',
                           font=('Microsoft JhengHei', 16))
 labelName.place(x=160, y=66, width=600, height=40)
 
 # 音量控制滑块
-s = tkinter.Scale(root, label='', bg='FloralWhite', fg="DeepSkyBlue", from_=0, to_=100, orient=tkinter.HORIZONTAL,
+s = tk.Scale(root, label='', bg='FloralWhite', fg="DeepSkyBlue", from_=0, to_=100, orient=tk.HORIZONTAL,
                   length=580, showvalue=0, tickinterval=25, resolution=0.1, command=contorlVoice,
                   font=('Microsoft JhengHei', 16))
 s.place(x=160, y=104, width=600)
