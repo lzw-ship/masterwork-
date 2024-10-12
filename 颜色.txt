@@ -1,0 +1,138 @@
+Alice Blue - 爱丽丝蓝 - #F0F8FF
+Antique White - 古董白 - #FAEBD7
+Aqua - 水色 - #00FFFF
+Aquamarine - 宝石绿 - #7FFFD4
+Azure - 天蓝色 - #F0FFFF
+Beige - 米色 - #F5F5DC
+Bisque - 米黄色 - #FFE4C4
+Blanched Almond - 淡杏仁色 - #FFEBCD
+Blue Violet - 蓝紫色 - #8A2BE2
+Brown - 棕色 - #A52A2A
+Burly Wood - 栗木色 - #DEB887
+Cadet Blue - 军校蓝 - #5F9EA0
+Chartreuse - 草绿色 - #7FFF00
+Chocolate - 巧克力色 - #D2691E
+Coral - 珊瑚色 - #FF7F50
+Cornflower Blue - 矢车菊蓝 - #6495ED
+Cornsilk - 玉米丝色 - #FFF8DC
+Crimson - 深红色 - #DC143C
+Cyan - 青色 - #00FFFF
+Dark Blue - 深蓝色 - #00008B
+Dark Cyan - 深青色 - #008B8B
+Dark Goldenrod - 深金黄 - #B8860B
+Dark Gray - 深灰色 - #A9A9A9
+Dark Green - 深绿色 - #006400
+Dark Khaki - 深卡其色 - #BDB76B
+Dark Magenta - 深洋红色 - #8B008B
+Dark Olive Green - 深橄榄绿 - #556B2F
+Dark Orange - 深橙色 - #FF8C00
+Dark Orchid - 深紫罗兰 - #9932CC
+Dark Red - 深红色 - #8B0000
+Dark Salmon - 深三文鱼色 - #E9967A
+Dark Sea Green - 深海绿 - #8FBC8F
+Dark Slate Blue - 深石板蓝 - #483D8B
+Dark Slate Gray - 深石板灰 - #2F4F4F
+Dark Turquoise - 深 turquoise - #00CED1
+Dark Violet - 深紫罗兰 - #9400D3
+Deep Pink - 深粉红 - #FF1493
+Deep Sky Blue - 深天蓝 - #00BFFF
+Dim Gray - 暗灰色 - #696969
+Dodger Blue - 道奇蓝 - #1E90FF
+Firebrick - 砖红色 - #B22222
+Floral White - 花白色 - #FFFAF0
+Forest Green - 森林绿 - #228B22
+Fuchsia - 紫红色 - #FF00FF
+Gainsboro - 浅灰色 - #DCDCDC
+Ghost White - 幻影白 - #F8F8FF
+Gold - 金色 - #FFD700
+Goldenrod - 金黄色 - #DAA520
+Gray - 灰色 - #808080
+Green Yellow - 绿黄色 - #ADFF2F
+Honeydew - 蜜瓜色 - #F0FFF0
+Hot Pink - 热粉红 - #FF69B4
+Indian Red - 印度红 - #CD5C5C
+Indigo - 靛蓝色 - #4B0082
+Ivory - 象牙白 - #FFFFF0
+Khaki - 卡其色 - #F0E68C
+Lavender - 淡紫色 - #E6E6FA
+Lavender Blush - 淡紫红 - #FFF0F5
+Lawn Green - 草绿色 - #7CFC00
+Lemon Chiffon - 柠檬绸 - #FFFACD
+Light Blue - 浅蓝色 - #ADD8E6
+Light Coral - 浅珊瑚色 - #F08080
+Light Cyan - 浅青色 - #E0FFFF
+Light Goldenrod Yellow - 浅金黄色 - #FAFAD2
+Light Gray - 浅灰色 - #D3D3D3
+Light Green - 浅绿色 - #90EE90
+Light Pink - 浅粉红 - #FFB6C1
+Light Salmon - 浅三文鱼色 - #FFA07A
+Light Sea Green - 浅海绿 - #20B2AA
+Light Sky Blue - 浅天蓝 - #87CEFA
+Light Slate Gray - 浅石板灰 - #778899
+Light Steel Blue - 浅钢蓝 - #B0C4DE
+Light Yellow - 浅黄色 - #FFFFE0
+Lime - 酸橙色 - #00FF00
+Lime Green - 酸橙绿 - #32CD32
+Linen - 亚麻布色 - #FAF0E6
+Magenta - 洋红色 - #FF00FF
+Maroon - 栗色 - #800000
+Medium Aquamarine - 中宝石绿 - #66CDAA
+Medium Blue - 中蓝色 - #0000CD
+Medium Orchid - 中紫罗兰 - #BA55D3
+Medium Purple - 中紫色 - #9370DB
+Medium Sea Green - 中海绿 - #3CB371
+Medium Slate Blue - 中石板蓝 - #7B68EE
+Medium Spring Green - 中春绿 - #00FA9A
+Medium Turquoise - 中 turquoise - #48D1CC
+Medium Violet Red - 中紫罗兰红 - #C71585
+Midnight Blue - 午夜蓝 - #191970
+Mint Cream - 薄荷奶油 - #F5FFFA
+Misty Rose - 模糊玫瑰 - #FFE4E1
+Moccasin - 棕褐色 - #FFE4B5
+Navajo White - 纳瓦霍白 - #FFDEAD
+Navy - 海军蓝 - #000080
+Old Lace - 老花边 - #FDF5E6
+Olive - 橄榄色 - #808000
+Olive Drab - 橄榄绿 - #6B8E23
+Orange - 橙色 - #FFA500
+Orange Red - 橙红色 - #FF4500
+Orchid - 紫罗兰 - #DA70D6
+Pale Goldenrod - 淡金黄色 - #EEE8AA
+Pale Green - 淡绿色 - #98FB98
+Pale Turquoise - 淡 turquoise - #AFEEEE
+Pale Violet Red - 淡紫罗兰红 - #DB7093
+Papaya Whip - 番木瓜色 - #FFEFD5
+Peach Puff - 桃色 - #FFDAB9
+Peru - 秘鲁色 - #CD853F
+Pink - 粉红色 - #FFC0CB
+Plum - 洋李色 - #DDA0DD
+Powder Blue - 粉蓝色 - #B0E0E6
+Purple - 紫色 - #800080
+Rebecca Purple - 瑞贝卡紫 - #663399
+Red - 红色 - #FF0000
+Rosy Brown - 玫瑰棕色 - #BC8F8F
+Royal Blue - 皇家蓝 - #4169E1
+Saddle Brown - 鞍棕色 - #8B4513
+Salmon - 三文鱼色 - #FA8072
+Sandy Brown - 沙棕色 - #F4A460
+Sea Green - 海绿色 - #2E8B57
+Seashell - 贝壳色 - #FFF5EE
+Sienna - 赭石色 - #A0522D
+Silver - 银色 - #C0C0C0
+Sky Blue - 天蓝色 - #87CEEB
+Slate Blue - 石板蓝 - #6A5ACD
+Slate Gray - 石板灰 - #708090
+Snow - 雪白色 - #FFFAFA
+Spring Green - 春绿色 - #00FF7F
+Steel Blue - 钢蓝色 - #4682B4
+Tan - 土黄色 - #D2B48C
+Teal - 蓝绿色 - #008080
+Thistle - 刺槐色 - #D8BFD8
+Tomato - 番茄色 - #FF6347
+Turquoise - 绿松石色 - #40E0D0
+Violet - 紫罗兰色 - #EE82EE
+Wheat - 小麦色 - #F5DEB3
+White - 白色 - #FFFFFF
+Whitesmoke - 烟白色 - #F5F5F5
+Yellow - 黄色 - #FFFF00
+Yellow Green - 黄绿色 - #9ACD32
